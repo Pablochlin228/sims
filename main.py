@@ -1,3 +1,4 @@
+import random
 from random import choice
 class Human:
     def __init__(self, name="Human", job=None, home=None, car=None):
@@ -99,12 +100,58 @@ class Human:
     def is_alive(self):
         if self.gladness <= 0:
             print("Depression...")
+            return False
         if self.satiety <= 0:
             print("Death...")
+            return False
+        if self.money <= -100:
+            print("Bankrupt")
+            return False
+
+    def live(self,day):
+        if self.is_alive() == False:
+            return False
+        if self.home is None:
+            print("Settle in the house!")
+            self.get_home()
+        if self.car is None:
+            self.get_car()
+            print(f"I bought a car {self.car.brand}")
+        if self.job is None:
+            self.get_job()
+            print(f"I working {self.job.work} salary {self.job.salary}")
+        self.days_indexes(day)
+        dice = random.randint(1,4)
+        if self.satiety < 10:
+            print("time to eat")
+            self.eat()
+        elif self.gladness < 5:
+            print("time to chill")
+            self.chill()
+        elif self.money <= 5:
+            print("time to eat")
+            self.work()
+        elif self.car.strength <= 5:
+            print("time to repair")
+            self.to_repair()
+        if dice == 1:
+            print("Time to chill")
+            self.chill()
+        if dice == 2:
+            print("Lets work")
+            self.work()
+        if dice == 3:
+            print("Cleaning home")
+            self.clean_home()
+        if dice == 4:
+            print("I am happy!")
+            manage = "delecacies"
+            self.shopping(manage)
+
 
     def chill(self):
         self.gladness += 10
-        self.job -= 1
+        self.money -= 50
 
     def to_repair(self):
         self.car.strength += 5
@@ -152,4 +199,7 @@ auto = {"BMW": {"fuel": 50, "strength": 100, "consumption": 18},
         "OPEL": {"fuel": 30, "strength": 60, "consumption": 12},
         "FORD": {"fuel": 35, "strength": 80, "consumption": 10}, }
 
-nick = Human()
+nick = Human("Nick")
+for day in range(1,366):
+    if nick.live(day) == False:
+        break
